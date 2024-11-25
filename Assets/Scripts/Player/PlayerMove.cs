@@ -74,37 +74,37 @@ public class PlayerMove : MonoBehaviour
             if(isWall != 'N')
                 PState = "Climb";
             Vector2 playerVel = new Vector2(dashDir * dashSpeed, 0);
-            myRigidbody.velocity = playerVel;
+            myRigidbody.linearVelocity = playerVel;
         }
 
         if(PState == "Run" || PState == "Jump" || PState == "ClimbBackground")//地面和跳躍中移動
         {
-            Vector2 playerVel = new Vector2(moveDir * moveSpeed, myRigidbody.velocity.y);
-            myRigidbody.velocity = playerVel;
-            bool isRun = Mathf.Abs(myRigidbody.velocity.x) > Mathf.Epsilon;
+            Vector2 playerVel = new Vector2(moveDir * moveSpeed, myRigidbody.linearVelocity.y);
+            myRigidbody.linearVelocity = playerVel;
+            bool isRun = Mathf.Abs(myRigidbody.linearVelocity.x) > Mathf.Epsilon;
             myAnimator.SetBool("isRun", isRun);
         }
 
         if(PState == "ClimbBackground")
         {
             if(Input.GetKey(KeyCode.W))
-                myRigidbody.velocity = new Vector2(myRigidbody.velocity.x * 0.5f, 5);
+                myRigidbody.linearVelocity = new Vector2(myRigidbody.linearVelocity.x * 0.5f, 5);
             else if(Input.GetKey(KeyCode.S))
-                myRigidbody.velocity = new Vector2(myRigidbody.velocity.x * 0.5f, -5);
+                myRigidbody.linearVelocity = new Vector2(myRigidbody.linearVelocity.x * 0.5f, -5);
             else
-                myRigidbody.velocity = new Vector2(myRigidbody.velocity.x * 0.5f, 0);
+                myRigidbody.linearVelocity = new Vector2(myRigidbody.linearVelocity.x * 0.5f, 0);
         }
 
         if(PState == "Climb")//爬牆
         {
-            Vector2 playerVel = new Vector2(moveDir * moveSpeed, myRigidbody.velocity.y);
-            myRigidbody.velocity = playerVel;
+            Vector2 playerVel = new Vector2(moveDir * moveSpeed, myRigidbody.linearVelocity.y);
+            myRigidbody.linearVelocity = playerVel;
             if(Input.GetKey(KeyCode.W))
-                myRigidbody.velocity = Vector2.up * 5;
+                myRigidbody.linearVelocity = Vector2.up * 5;
             else if(Input.GetKey(KeyCode.S))
-                myRigidbody.velocity = Vector2.down * 5;
+                myRigidbody.linearVelocity = Vector2.down * 5;
             else
-                myRigidbody.velocity = Vector2.up * 0;
+                myRigidbody.linearVelocity = Vector2.up * 0;
         }
 
         if(PState == "Run" || PState == "Jump" || PState == "WallJump" || PState == "ClimbBackground")
@@ -117,13 +117,13 @@ public class PlayerMove : MonoBehaviour
     
         if(PState == "GetKnockBack")//受擊退
         {
-            Vector2 playerVel = new Vector2(knockBackDir * 5, myRigidbody.velocity.y);
-            myRigidbody.velocity = playerVel;
+            Vector2 playerVel = new Vector2(knockBackDir * 5, myRigidbody.linearVelocity.y);
+            myRigidbody.linearVelocity = playerVel;
         }
         if(PState == "WallJump")//蹬牆跳
         {
-            Vector2 playerVel = new Vector2(wallJumpDir * moveSpeed, myRigidbody.velocity.y);
-            myRigidbody.velocity = playerVel;
+            Vector2 playerVel = new Vector2(wallJumpDir * moveSpeed, myRigidbody.linearVelocity.y);
+            myRigidbody.linearVelocity = playerVel;
         }
         if(PState == "ClimbBackground")//攀爬背景牆
             myRigidbody.gravityScale = 0;
@@ -136,7 +136,7 @@ public class PlayerMove : MonoBehaviour
         else
             dashDir = -1;
         PState = "Dash";
-        myRigidbody.velocity = Vector2.up * 0;
+        myRigidbody.linearVelocity = Vector2.up * 0;
         canDash = false;
         yield return new WaitForSeconds(0.1f);
         if(isWall == 'N')
@@ -157,7 +157,7 @@ public class PlayerMove : MonoBehaviour
     {
         myAnimator.SetTrigger("getHurt");
         myRigidbody.gravityScale = normalGravity;
-        myRigidbody.velocity = Vector2.up * 15;
+        myRigidbody.linearVelocity = Vector2.up * 15;
         PState = "GetKnockBack";
         if(knockBackDir == 0)
             myBoxCollider2D.enabled = false;
@@ -183,12 +183,12 @@ public class PlayerMove : MonoBehaviour
             if(Input.GetKeyDown(KeyCode.Space) && canJump > 0 && isWall == 'N') //能否一般跳躍或多段跳
             {
                 Vector2 jumpVel = new Vector2(0.0f, jumpSpeed);
-                myRigidbody.velocity = Vector2.up * jumpVel;
+                myRigidbody.linearVelocity = Vector2.up * jumpVel;
                 canJump -= 1;
                 PState = "Jump";
             }
-            if(Input.GetKeyUp(KeyCode.Space) && canJump >= 0 && myRigidbody.velocity.y > 0 && PState == "Jump")
-                myRigidbody.velocity = myRigidbody.velocity * 0.5f * Vector2.up;
+            if(Input.GetKeyUp(KeyCode.Space) && canJump >= 0 && myRigidbody.linearVelocity.y > 0 && PState == "Jump")
+                myRigidbody.linearVelocity = myRigidbody.linearVelocity * 0.5f * Vector2.up;
         }
         else if(Input.GetKeyDown(KeyCode.Space) && PState == "Climb") //蹬牆跳
         {
@@ -204,7 +204,7 @@ public class PlayerMove : MonoBehaviour
     {   
         transform.Translate(wallJumpDir * moveSpeed * Time.deltaTime, 0, 0);
         PState = "WallJump";
-        myRigidbody.velocity = Vector2.up * jumpSpeed;
+        myRigidbody.linearVelocity = Vector2.up * jumpSpeed;
         yield return new WaitForSeconds(wallJumpFlex);
         myRigidbody.gravityScale = normalGravity;
         if(PState != "Dash")
@@ -215,10 +215,10 @@ public class PlayerMove : MonoBehaviour
 
     void MaxFallSpeed()
     {
-        if(myRigidbody.velocity.y < -30)
+        if(myRigidbody.linearVelocity.y < -30)
         {
             myRigidbody.gravityScale = 0;
-            myRigidbody.velocity = Vector2.down * 30;
+            myRigidbody.linearVelocity = Vector2.down * 30;
         }
     }
 
@@ -233,7 +233,7 @@ public class PlayerMove : MonoBehaviour
                     PState = "Climb";
                     isWall = 'L';
                     myRigidbody.gravityScale = 0;
-                    myRigidbody.velocity = Vector2.up * 0;
+                    myRigidbody.linearVelocity = Vector2.up * 0;
                     break;
                 }
                 else if (p.normal == new Vector2(-1f, 0f))
@@ -241,7 +241,7 @@ public class PlayerMove : MonoBehaviour
                     PState = "Climb";
                     isWall = 'R';
                     myRigidbody.gravityScale = 0;
-                    myRigidbody.velocity = Vector2.up * 0;
+                    myRigidbody.linearVelocity = Vector2.up * 0;
                     break;
                 }
                 else if (p.normal != new Vector2(0f, -1f))
@@ -287,14 +287,14 @@ public class PlayerMove : MonoBehaviour
                 PState = "Climb";
                 isWall = 'L';
                 myRigidbody.gravityScale = 0;
-                myRigidbody.velocity = Vector2.up * 0;
+                myRigidbody.linearVelocity = Vector2.up * 0;
             }
             else if(other.contacts[0].normal == new Vector2(-1f, 0f))
             {
                 PState = "Climb";
                 isWall = 'R';
                 myRigidbody.gravityScale = 0;
-                myRigidbody.velocity = Vector2.up * 0;
+                myRigidbody.linearVelocity = Vector2.up * 0;
             }
         }
     }
@@ -327,7 +327,7 @@ public class PlayerMove : MonoBehaviour
     {
         if(other.gameObject.tag == "Background" && PState != "GetKnockBack" && PState != "ClimbBackground")
         {
-            myRigidbody.velocity = Vector2.up * 0;
+            myRigidbody.linearVelocity = Vector2.up * 0;
             PState = "ClimbBackground";
         }
     }
@@ -337,7 +337,7 @@ public class PlayerMove : MonoBehaviour
         if(other.gameObject.tag == "Background")
         {
             myRigidbody.gravityScale = normalGravity;
-            myRigidbody.velocity = Vector2.up * 0;
+            myRigidbody.linearVelocity = Vector2.up * 0;
             PState = "Jump";
         }
     }

@@ -23,7 +23,7 @@ public class PIdleState : IPlayerState
     public void OnUpdate()
     {
         flip();
-        playerParameter.myRigidBody2D.velocity = new Vector2(0, 0);
+        playerParameter.myRigidBody2D.linearVelocity = new Vector2(0, 0);
         WallCheck();
         if(Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))
             playerStateMachine.TransitionState(PStateType.Run);
@@ -85,8 +85,8 @@ public class PRunState : IPlayerState
 
     void move()
     {
-        Vector2 playerVel = new Vector2(playerParameter.moveDir * playerParameter.runSpeed, playerParameter.myRigidBody2D.velocity.y);
-        playerParameter.myRigidBody2D.velocity = playerVel;
+        Vector2 playerVel = new Vector2(playerParameter.moveDir * playerParameter.runSpeed, playerParameter.myRigidBody2D.linearVelocity.y);
+        playerParameter.myRigidBody2D.linearVelocity = playerVel;
     }
     void flip()
     {
@@ -157,7 +157,7 @@ public class PDashState : IPlayerState
 
     void move()
     {
-        playerParameter.myRigidBody2D.velocity = new Vector2(playerParameter.dashSpeed * playerParameter.dashDir, 0);
+        playerParameter.myRigidBody2D.linearVelocity = new Vector2(playerParameter.dashSpeed * playerParameter.dashDir, 0);
         timer += Time.deltaTime;
     }
 
@@ -172,7 +172,7 @@ public class PDashState : IPlayerState
     public void OnExit()
     {
         playerParameter.moveDir = playerParameter.dashDir;
-        playerParameter.myRigidBody2D.velocity = new Vector2(0,0);
+        playerParameter.myRigidBody2D.linearVelocity = new Vector2(0,0);
         playerParameter.myRigidBody2D.gravityScale = playerParameter.normalGravity;
         playerParameter.dashCD = 1.5f;
         Debug.Log(MathF.Abs(playerStateMachine.transform.position.x - startPoint.transform.position.x));
@@ -192,8 +192,8 @@ public class PJumpState : IPlayerState
     public void OnEnter()
     {
         
-        Vector2 jumpVel = new Vector2(playerParameter.myRigidBody2D.velocity.x, playerParameter.jumpSpeed);
-        playerParameter.myRigidBody2D.velocity = jumpVel;
+        Vector2 jumpVel = new Vector2(playerParameter.myRigidBody2D.linearVelocity.x, playerParameter.jumpSpeed);
+        playerParameter.myRigidBody2D.linearVelocity = jumpVel;
         Debug.Log("Jump");
     }
 
@@ -201,7 +201,7 @@ public class PJumpState : IPlayerState
     {
         flip();
         move();
-        if(Input.GetKeyUp(KeyCode.Space) || playerParameter.myRigidBody2D.velocity.y < 0)
+        if(Input.GetKeyUp(KeyCode.Space) || playerParameter.myRigidBody2D.linearVelocity.y < 0)
             playerStateMachine.TransitionState(PStateType.Fall);
         if(Input.GetKey(KeyCode.LeftControl) && playerParameter.dashCD <= 0)
             playerStateMachine.TransitionState(PStateType.Dash);
@@ -216,8 +216,8 @@ public class PJumpState : IPlayerState
     }
     void move()
     {
-        Vector2 playerVel = new Vector2(playerParameter.moveDir * playerParameter.runSpeed, playerParameter.myRigidBody2D.velocity.y);
-        playerParameter.myRigidBody2D.velocity = playerVel;
+        Vector2 playerVel = new Vector2(playerParameter.moveDir * playerParameter.runSpeed, playerParameter.myRigidBody2D.linearVelocity.y);
+        playerParameter.myRigidBody2D.linearVelocity = playerVel;
     }
         void flip()
     {
@@ -272,7 +272,7 @@ public class PFallState : IPlayerState
         playerParameter.myRigidBody2D.gravityScale = playerParameter.normalGravity;
         Debug.Log("Fall");
         if(playerParameter.jumpSpeed >= 0)
-            playerParameter.myRigidBody2D.velocity = new Vector2(playerParameter.myRigidBody2D.velocity.x, playerParameter.myRigidBody2D.velocity.y / 2); 
+            playerParameter.myRigidBody2D.linearVelocity = new Vector2(playerParameter.myRigidBody2D.linearVelocity.x, playerParameter.myRigidBody2D.linearVelocity.y / 2); 
     }
 
     public void OnUpdate()
@@ -305,8 +305,8 @@ public class PFallState : IPlayerState
     }
     void move()
     {
-        Vector2 playerVel = new Vector2(playerParameter.moveDir * playerParameter.runSpeed, playerParameter.myRigidBody2D.velocity.y);
-        playerParameter.myRigidBody2D.velocity = playerVel;
+        Vector2 playerVel = new Vector2(playerParameter.moveDir * playerParameter.runSpeed, playerParameter.myRigidBody2D.linearVelocity.y);
+        playerParameter.myRigidBody2D.linearVelocity = playerVel;
     }
     void flip()
     {
@@ -360,15 +360,15 @@ public class PClimbState : IPlayerState
     void Move()
     {
         if(playerParameter.wallCheck == "Left" && Input.GetKey(KeyCode.D))
-            playerParameter.myRigidBody2D.velocity = Vector2.right * playerParameter.runSpeed;
+            playerParameter.myRigidBody2D.linearVelocity = Vector2.right * playerParameter.runSpeed;
         else if(playerParameter.wallCheck == "Right" && Input.GetKey(KeyCode.A))
-            playerParameter.myRigidBody2D.velocity = Vector2.left * playerParameter.runSpeed;
+            playerParameter.myRigidBody2D.linearVelocity = Vector2.left * playerParameter.runSpeed;
         else if(Input.GetKey(KeyCode.W))
-            playerParameter.myRigidBody2D.velocity = Vector2.up * 5;
+            playerParameter.myRigidBody2D.linearVelocity = Vector2.up * 5;
         else if(Input.GetKey(KeyCode.S))
-            playerParameter.myRigidBody2D.velocity = Vector2.down * 5;
+            playerParameter.myRigidBody2D.linearVelocity = Vector2.down * 5;
         else 
-            playerParameter.myRigidBody2D.velocity = Vector2.down * 0;
+            playerParameter.myRigidBody2D.linearVelocity = Vector2.down * 0;
 
     }
     void WallCheck()
@@ -413,7 +413,7 @@ public class PBackgroundClimbState : IPlayerState
         //playerParameter.myAnim.Play("");
         Debug.Log("Background");
         playerParameter.myRigidBody2D.gravityScale = 0;
-        playerParameter.myRigidBody2D.velocity = new Vector2(0, 0);
+        playerParameter.myRigidBody2D.linearVelocity = new Vector2(0, 0);
     }
 
     public void OnUpdate()
@@ -445,16 +445,16 @@ public class PBackgroundClimbState : IPlayerState
     }
     void MoveHorizontal()
     {
-        playerParameter.myRigidBody2D.velocity = new Vector2(playerParameter.runSpeed * playerParameter.moveDir, playerParameter.myRigidBody2D.velocity.y);
+        playerParameter.myRigidBody2D.linearVelocity = new Vector2(playerParameter.runSpeed * playerParameter.moveDir, playerParameter.myRigidBody2D.linearVelocity.y);
     }
     void MoveVertical()
     {
         if(Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.Space))
-            playerParameter.myRigidBody2D.velocity = new Vector2(playerParameter.myRigidBody2D.velocity.x, 5);
+            playerParameter.myRigidBody2D.linearVelocity = new Vector2(playerParameter.myRigidBody2D.linearVelocity.x, 5);
         else if(Input.GetKey(KeyCode.S))
-            playerParameter.myRigidBody2D.velocity = new Vector2(playerParameter.myRigidBody2D.velocity.x, -5);
+            playerParameter.myRigidBody2D.linearVelocity = new Vector2(playerParameter.myRigidBody2D.linearVelocity.x, -5);
         else 
-            playerParameter.myRigidBody2D.velocity = new Vector2(playerParameter.myRigidBody2D.velocity.x, 0);
+            playerParameter.myRigidBody2D.linearVelocity = new Vector2(playerParameter.myRigidBody2D.linearVelocity.x, 0);
     }
     void WallCheck()
     {
@@ -491,13 +491,13 @@ public class PGetHitState : IPlayerState
     public void OnEnter()
     {
         playerParameter.myRigidBody2D.gravityScale = playerParameter.normalGravity;
-        playerParameter.myRigidBody2D.velocity = Vector2.up * 15;
+        playerParameter.myRigidBody2D.linearVelocity = Vector2.up * 15;
         Debug.Log("GetHit");
     }
     public void OnUpdate()
     {
         flip();
-        playerParameter.myRigidBody2D.velocity = new Vector2(playerParameter.knockBackSpeed * playerParameter.moveDir, playerParameter.myRigidBody2D.velocity.y);
+        playerParameter.myRigidBody2D.linearVelocity = new Vector2(playerParameter.knockBackSpeed * playerParameter.moveDir, playerParameter.myRigidBody2D.linearVelocity.y);
     }
 
     void flip()
