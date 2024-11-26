@@ -1,2 +1,2 @@
 # easy-parkour
-a EASY parkour game made with unity
+EASY parkour game made with unity
