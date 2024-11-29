@@ -94,15 +94,13 @@ public class PlayerStateMachine : MonoBehaviour
         {
             foreach(ContactPoint2D p in other.contacts)
             {
-                if (p.normal == new Vector2(1f, 0f)) 
+                if (p.normal.y <= Mathf.Abs(Mathf.Epsilon) && p.normal.x == 1) 
                 {
                     playerParameter.wallCheck = "Left";
                 }
-                else if (p.normal.y <= Mathf.Abs(Mathf.Epsilon) || p.normal.x == -1) 
+                else if (p.normal.y <= Mathf.Abs(Mathf.Epsilon) && p.normal.x == -1) 
                 {
-                    Debug.Log("gay1");
                     playerParameter.wallCheck = "Right";
-                   
                 }
             }
         }

@@ -25,7 +25,7 @@ public class PIdleState : IPlayerState
         flip();
         playerParameter.myRigidBody2D.linearVelocity = new Vector2(0, 0);
         WallCheck();
-        if(Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))
+        if(Input.GetKey(KeyCode.A) ^ Input.GetKey(KeyCode.D))
             playerStateMachine.TransitionState(PStateType.Run);
         if(Input.GetKeyDown(KeyCode.Space))
             playerStateMachine.TransitionState(PStateType.Jump);
@@ -74,9 +74,9 @@ public class PRunState : IPlayerState
         flip();
         if(!(Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D)))
             playerStateMachine.TransitionState(PStateType.Idle);
-        if(Input.GetKey(KeyCode.Space))
+        if(Input.GetKeyDown(KeyCode.Space))
             playerStateMachine.TransitionState(PStateType.Jump);
-        if(Input.GetKey(KeyCode.LeftControl) && playerParameter.dashCD <= 0)
+        if(Input.GetKeyDown(KeyCode.LeftControl) && playerParameter.dashCD <= 0)
             playerStateMachine.TransitionState(PStateType.Dash);
         move();
         WallCheck();
@@ -90,18 +90,20 @@ public class PRunState : IPlayerState
     }
     void flip()
     {
-        if(Input.GetKey(KeyCode.A))
+        if(Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D))
         {
             playerStateMachine.transform.localScale = new Vector3(-1, 1, 1);
             playerParameter.moveDir = -1;
             playerParameter.dashDir = -1;
         }
-        else if(Input.GetKey(KeyCode.D))
+        else if(Input.GetKey(KeyCode.D) && !Input.GetKey(KeyCode.A))
         {
             playerStateMachine.transform.localScale = new Vector3(1, 1, 1);
             playerParameter.moveDir = 1;
             playerParameter.dashDir = 1;
         }
+        else
+            playerStateMachine.TransitionState(PStateType.Idle);
     }
 
     void WallCheck()
@@ -221,13 +223,13 @@ public class PJumpState : IPlayerState
     }
         void flip()
     {
-        if(Input.GetKey(KeyCode.A))
+        if(Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D))
         {
             playerStateMachine.transform.localScale = new Vector3(-1, 1, 1);
             playerParameter.moveDir = -1;
             playerParameter.dashDir = -1;
         }
-        else if(Input.GetKey(KeyCode.D))
+        else if(Input.GetKey(KeyCode.D) && !Input.GetKey(KeyCode.A))
         {
             playerStateMachine.transform.localScale = new Vector3(1, 1, 1);
             playerParameter.moveDir = 1;
@@ -310,13 +312,13 @@ public class PFallState : IPlayerState
     }
     void flip()
     {
-        if(Input.GetKey(KeyCode.A))
+        if(Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D))
         {
             playerStateMachine.transform.localScale = new Vector3(-1, 1, 1);
             playerParameter.moveDir = -1;
             playerParameter.dashDir = -1;
         }
-        else if(Input.GetKey(KeyCode.D))
+        else if(Input.GetKey(KeyCode.D) && !Input.GetKey(KeyCode.A))
         {
             playerStateMachine.transform.localScale = new Vector3(1, 1, 1);
             playerParameter.moveDir = 1;
