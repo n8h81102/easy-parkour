@@ -12,7 +12,7 @@ public enum StateType
 
 [Serializable] 
 public class Parameter
-{ 
+{
     public int health;
     public int damage;
     public int strength;
@@ -20,10 +20,12 @@ public class Parameter
     public float chaseSpeed;
     public float recoveryTime;
     public float idleTime;
+    public int bullet;
     public Transform[] wanderPoint;
     public Transform[] chaseArea;
     public Transform target;
     public Animator animator;
+    public int cnt;
 }
 
 public class EnemyFSM : MonoBehaviour
