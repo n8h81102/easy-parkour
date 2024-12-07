@@ -25,7 +25,7 @@ public class PIdleState : IPlayerState
         flip();
         playerParameter.myRigidBody2D.linearVelocity = new Vector2(0, 0);
         WallCheck();
-        if(Input.GetKey(KeyCode.A) ^ Input.GetKey(KeyCode.D))
+        if(Input.GetKey(KeyCode.A) ^ Input.GetKey(KeyCode.D) && playerParameter.wallCheck == "Ground")
             playerStateMachine.TransitionState(PStateType.Run);
         if(Input.GetKeyDown(KeyCode.Space))
             playerStateMachine.TransitionState(PStateType.Jump);
@@ -149,7 +149,7 @@ public class PDashState : IPlayerState
             if(playerParameter.wallCheck == "Background")
                 playerStateMachine.TransitionState(PStateType.BackgroundClimb);
             else
-                playerStateMachine.TransitionState(PStateType.Idle);            
+                playerStateMachine.TransitionState(PStateType.Idle);   
         }
         move();
         if(timer > 0.1f)
@@ -348,6 +348,7 @@ public class PClimbState : IPlayerState
         //playerParameter.myAnim.Play("");
         Debug.Log("Climb");
         playerParameter.myRigidBody2D.gravityScale = 0;
+        playerParameter.airJump = 1;
     }
 
     public void OnUpdate()

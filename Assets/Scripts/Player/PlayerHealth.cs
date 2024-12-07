@@ -13,6 +13,7 @@ public class PlayerHealth : MonoBehaviour
 
     void Start()
     {
+        health = 10;
         HealthBar.healthMax = health;
         HealthBar.healthCurrent = health;
         myRenderer = GetComponent<Renderer>();

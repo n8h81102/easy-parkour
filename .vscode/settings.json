@@ -58,6 +58,8 @@
     },
     "dotnet.defaultSolution": "easy-parkour.sln",
     "cSpell.words": [
-        "Moesk"
+        "Moesk",
+        "moeskfire",
+        "Rigidbody"
     ]
 }

@@ -12,7 +12,7 @@ public class MoeskFSM : MonoBehaviour
     public IState currentState;
     [SerializeField] private GameObject bullet0;
     [SerializeField] private float bulletSpeed;
-    [SerializeField] private Transform target;
+    [SerializeField] private GameObject target;
     private Dictionary<MoeskState, IState> states = new Dictionary<MoeskState, IState>();
     
     void Start()
@@ -39,6 +39,6 @@ public class MoeskFSM : MonoBehaviour
     {
         
         MoeskFire moeskfire = Instantiate(bullet0, transform.position, Quaternion.identity).GetComponent<MoeskFire>();
-        moeskfire.InitializedBullet(target, bulletSpeed);
+        moeskfire.InitializedBullet(target.transform, bulletSpeed);
     }
 }
