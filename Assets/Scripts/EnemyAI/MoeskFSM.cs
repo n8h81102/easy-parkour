@@ -4,7 +4,7 @@ using UnityEngine;
 
 public enum MoeskState
 {
-    Idle, Shoot1, Shoot2, Smoke0, Smoke1, Escape
+    Idle, Shoot1, Shoot2, Smoke0, Smoke1, Escape, Reload
 }
 public class MoeskFSM : MonoBehaviour
 {
@@ -19,6 +19,8 @@ public class MoeskFSM : MonoBehaviour
     {
         states.Add(MoeskState.Idle, new MoeskIdle(this));
         states.Add(MoeskState.Shoot1, new MoeskShoot1(this));
+        states.Add(MoeskState.Reload, new MoeskReload(this));
+        states.Add(MoeskState.Escape, new MoeskEscape(this));
 
         TransitionState(MoeskState.Idle);
     }
@@ -37,7 +39,6 @@ public class MoeskFSM : MonoBehaviour
     }
     public void Shoot0()
     {
-        
         MoeskFire moeskfire = Instantiate(bullet0, transform.position, Quaternion.identity).GetComponent<MoeskFire>();
         moeskfire.InitializedBullet(target.transform, bulletSpeed);
     }

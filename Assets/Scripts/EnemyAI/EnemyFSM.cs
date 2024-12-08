@@ -21,6 +21,7 @@ public class Parameter
     public float recoveryTime;
     public float idleTime;
     public int bullet;
+    public float escapeDis;
     public Transform[] wanderPoint;
     public Transform[] chaseArea;
     public Transform target;
