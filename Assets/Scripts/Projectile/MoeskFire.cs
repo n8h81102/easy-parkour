@@ -57,8 +57,9 @@ public class MoeskFire : MonoBehaviour
             Destroy(gameObject);
         }
     }
+}
 
-
-
-
+public class MoeskFire2 : MonoBehaviour
+{
+    
 }
